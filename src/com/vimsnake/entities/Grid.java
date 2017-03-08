@@ -2,6 +2,7 @@ package com.vimsnake.entities;
 
 import java.util.Random;
 
+import com.vimsnake.util.Direction;
 import com.vimsnake.util.NodeStatus;
 import com.vimsnake.util.Properties;
 
@@ -10,6 +11,7 @@ public class Grid {
 	private final int width;
 	private final int height;
 	private Snake snake;
+	private Direction direction;
 	private EntityNode food;
 	private Node[][] status;
 
@@ -17,6 +19,7 @@ public class Grid {
 	public Grid(int width, int height) {
 		this.width = width;
 		this.height = height;
+		this.direction = Direction.RIGHT;
 		// 初始化所有网格节点
 		status = new Node[width][height];
 		for (int i = 0; i < Properties.WIDTH; ++i) {
@@ -51,6 +54,25 @@ public class Grid {
 		status[x][y].setNodeStatus(NodeStatus.FOOD);
 	}
 
+	// 下一步
+	public void nextRound() {
+		switch (direction) {
+		case UP:
+			snake.addHead(snake.getHead().getX(), snake.getHead().getY() - 1);
+			break;
+		case DOWN:
+			snake.addHead(snake.getHead().getX(), snake.getHead().getY() + 1);
+			break;
+		case LEFT:
+			snake.addHead(snake.getHead().getX() - 1, snake.getHead().getY());
+			break;
+		case RIGHT:
+			snake.addHead(snake.getHead().getX() + 1, snake.getHead().getY());
+			break;
+		}
+
+	}
+
 	public Snake getSnake() {
 		return snake;
 	}
@@ -71,4 +93,11 @@ public class Grid {
 		return this.status[x][y].getNodeStatus();
 	}
 
+	public Direction getDirection() {
+		return direction;
+	}
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
 }

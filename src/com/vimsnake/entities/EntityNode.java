@@ -1,6 +1,6 @@
 package com.vimsnake.entities;
 
-// 组成蛇身体的节点
+// 组成蛇身体的节点或食物
 public class EntityNode {
 	private int x;
 	private int y;

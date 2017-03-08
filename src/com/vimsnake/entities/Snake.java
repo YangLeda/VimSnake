@@ -8,19 +8,17 @@ import com.vimsnake.util.Direction;
 public class Snake {
 	private Direction direction;
 	private LinkedList<EntityNode> body;
-	
-	public Snake(){
+
+	public Snake() {
 		direction = Direction.RIGHT;
-		// 初始化链表
 		body = new LinkedList<EntityNode>();
-		
+
 	}
-	
-	public void addTail(int x, int y){
+
+	public void addTail(int x, int y) {
 		body.add(new EntityNode(x, y));
 	}
 
-	
 	public Direction getDirection() {
 		return direction;
 	}
@@ -28,9 +26,9 @@ public class Snake {
 	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
-	
+
 	public LinkedList<EntityNode> getBody() {
 		return body;
 	}
-	
+
 }

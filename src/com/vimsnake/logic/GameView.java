@@ -38,20 +38,19 @@ public class GameView {
 		graphics.setColor(Color.GRAY);
 		graphics.fillRect(0, 0, Properties.WIDTH * Properties.UNIT, Properties.HEIGTH * Properties.UNIT);
 	}
-	
+
 	protected void drawFood(Graphics graphics, EntityNode food) {
 		graphics.setColor(Color.RED);
-		graphics.fillRect(food.getX() * Properties.UNIT, food.getY() * Properties.UNIT, Properties.UNIT, Properties.UNIT);
+		graphics.fillRect(food.getX() * Properties.UNIT, food.getY() * Properties.UNIT, Properties.UNIT,
+				Properties.UNIT);
 	}
 
 	protected void drawSnake(Graphics graphics, Snake snake) {
 		graphics.setColor(Color.BLACK);
-		for(EntityNode n:snake.getBody()){
+		for (EntityNode n : snake.getBody()) {
 			graphics.fillRect(n.getX() * Properties.UNIT, n.getY() * Properties.UNIT, Properties.UNIT, Properties.UNIT);
-		}		
+		}
 	}
-
-
 
 	public void draw() {
 		canvas.repaint();

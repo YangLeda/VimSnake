@@ -1,7 +1,7 @@
 package com.vimsnake.util;
 
 public enum Direction {
-	UP(1), DOWN(2), LEFT(3), RIGHT(4);
+	UP(1), DOWN(3), LEFT(4), RIGHT(2);
 
 	private final int directionCode;
 

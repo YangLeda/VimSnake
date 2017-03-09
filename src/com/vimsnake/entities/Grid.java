@@ -12,7 +12,7 @@ public class Grid {
 	private final int height;
 	private Snake snake;
 	private Direction direction;
-	private EntityNode food;
+	private EntityNode food = null;
 	private Node[][] status;
 
 	// 构造
@@ -50,27 +50,88 @@ public class Grid {
 			y = rand.nextInt(Properties.HEIGTH);
 		} while (status[x][y].getNodeStatus() != NodeStatus.EMPTY);
 
-		food = new EntityNode(x, y);
 		status[x][y].setNodeStatus(NodeStatus.FOOD);
+		// 将旧的食物节点状态设为EMPTY
+		if (food != null) {
+			status[food.getX()][food.getY()].setNodeStatus(NodeStatus.EMPTY);
+		}
+
+		food = new EntityNode(x, y);
 	}
 
 	// 下一步
-	public void nextRound() {
+	public boolean nextRound() {
 		switch (direction) {
 		case UP:
-			snake.addHead(snake.getHead().getX(), snake.getHead().getY() - 1);
+			if (snake.getHead().getY() - 1 >= Properties.HEIGTH || snake.getHead().getY() - 1 < 0) {
+				// 超界
+				return false;
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() - 1].getNodeStatus() == NodeStatus.SNAKE) {
+				// 碰到蛇体
+				return false;
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() - 1].getNodeStatus() == NodeStatus.EMPTY) {
+				// 行进一格
+				status[snake.getHead().getX()][snake.getHead().getY() - 1].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX(), snake.getHead().getY() - 1);
+				status[snake.getTail().getX()][snake.getTail().getY()].setNodeStatus(NodeStatus.EMPTY);
+				snake.removeTail();
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() - 1].getNodeStatus() == NodeStatus.FOOD) {
+				// 行进并吃到食物
+				status[snake.getHead().getX()][snake.getHead().getY() - 1].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX(), snake.getHead().getY() - 1);
+				createFood();
+			}
 			break;
 		case DOWN:
-			snake.addHead(snake.getHead().getX(), snake.getHead().getY() + 1);
+			if (snake.getHead().getY() + 1 >= Properties.HEIGTH || snake.getHead().getY() + 1 < 0) {
+				return false;
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() + 1].getNodeStatus() == NodeStatus.SNAKE) {
+				return false;
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() + 1].getNodeStatus() == NodeStatus.EMPTY) {
+				status[snake.getHead().getX()][snake.getHead().getY() + 1].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX(), snake.getHead().getY() + 1);
+				status[snake.getTail().getX()][snake.getTail().getY()].setNodeStatus(NodeStatus.EMPTY);
+				snake.removeTail();
+			} else if (status[snake.getHead().getX()][snake.getHead().getY() + 1].getNodeStatus() == NodeStatus.FOOD) {
+				status[snake.getHead().getX()][snake.getHead().getY() + 1].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX(), snake.getHead().getY() + 1);
+				createFood();
+			}
 			break;
 		case LEFT:
-			snake.addHead(snake.getHead().getX() - 1, snake.getHead().getY());
+			if (snake.getHead().getX() - 1 >= Properties.WIDTH || snake.getHead().getX() - 1 < 0) {
+				return false;
+			} else if (status[snake.getHead().getX() - 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.SNAKE) {
+				return false;
+			} else if (status[snake.getHead().getX() - 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.EMPTY) {
+				status[snake.getHead().getX() - 1][snake.getHead().getY()].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX() - 1, snake.getHead().getY());
+				status[snake.getTail().getX()][snake.getTail().getY()].setNodeStatus(NodeStatus.EMPTY);
+				snake.removeTail();
+			} else if (status[snake.getHead().getX() - 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.FOOD) {
+				status[snake.getHead().getX() - 1][snake.getHead().getY()].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX() - 1, snake.getHead().getY());
+				createFood();
+			}
 			break;
 		case RIGHT:
-			snake.addHead(snake.getHead().getX() + 1, snake.getHead().getY());
+			if (snake.getHead().getX() + 1 >= Properties.HEIGTH || snake.getHead().getX() + 1 < 0) {
+				return false;
+			} else if (status[snake.getHead().getX() + 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.SNAKE) {
+				return false;
+			} else if (status[snake.getHead().getX() + 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.EMPTY) {
+				status[snake.getHead().getX() + 1][snake.getHead().getY()].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX() + 1, snake.getHead().getY());
+				status[snake.getTail().getX()][snake.getTail().getY()].setNodeStatus(NodeStatus.EMPTY);
+				snake.removeTail();
+			} else if (status[snake.getHead().getX() + 1][snake.getHead().getY()].getNodeStatus() == NodeStatus.FOOD) {
+				status[snake.getHead().getX() + 1][snake.getHead().getY()].setNodeStatus(NodeStatus.SNAKE);
+				snake.addHead(snake.getHead().getX() + 1, snake.getHead().getY());
+				createFood();
+			}
 			break;
 		}
-
+		return true;
 	}
 
 	public Snake getSnake() {

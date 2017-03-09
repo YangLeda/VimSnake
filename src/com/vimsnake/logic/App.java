@@ -28,7 +28,7 @@ public class App {
 				JFrame window = new JFrame("VimSnake");
 				window.setResizable(false);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				
+
 				Grid grid = new Grid(Properties.HEIGTH, Properties.WIDTH);
 
 				GameView gameView = new GameView(grid);
@@ -36,11 +36,11 @@ public class App {
 				gameView.getCanvas().setPreferredSize(
 						new Dimension(Properties.WIDTH * Properties.UNIT, Properties.HEIGTH * Properties.UNIT));
 				window.getContentPane().add(gameView.getCanvas(), BorderLayout.CENTER);
-				
+
 				GameController gameController = new GameController(grid, gameView);
 				window.addKeyListener(gameController);
 				new Thread(gameController).start();
-				
+
 				window.pack();
 				window.setLocationRelativeTo(null);
 				window.setVisible(true);

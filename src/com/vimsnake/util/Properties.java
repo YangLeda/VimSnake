@@ -4,6 +4,6 @@ public class Properties {
 	public static final int WIDTH = 20;
 	public static final int HEIGTH = 20;
 	public static final int UNIT = 30;
-	
-	public static final int SLEEPTIME = 600;
+
+	public static final int SLEEPTIME = 400;
 }
